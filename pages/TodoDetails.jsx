@@ -1,23 +1,29 @@
-import { todoService } from "../services/todo.service.js"
 import { showErrorMsg } from "../services/event-bus.service.js"
+import { getTodo } from "../store/actions/todo.actions.js"
+
+const {useSelector} = ReactRedux
 
 const { useState, useEffect } = React
 const { useParams, useNavigate, Link } = ReactRouterDOM
 
 export function TodoDetails() {
 
-    const [todo, setTodo] = useState(null)
+    // const [todo, setTodo] = useState(null)
     const params = useParams()
     const navigate = useNavigate()
-
-    useEffect(() => {
+    const todo = useSelector(state => state.todo)
+    
+    console.log(todo)
+    useEffect(() => {   
         loadTodo()
+        
     }, [params.todoId])
 
 
     function loadTodo() {
-        todoService.get(params.todoId)
-            .then(setTodo)
+        // todoService.get(params.todoId)
+        //     .then(setTodo)
+        getTodo(params.todoId)
             .catch(err => {
                 console.error('err:', err)
                 showErrorMsg('Cannot load todo')

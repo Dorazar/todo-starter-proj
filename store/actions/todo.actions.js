@@ -1,5 +1,5 @@
 import { todoService } from "../../services/todo.service.js";
-import {GET_TODO,UPDATE_TODO,ADD_TODO,REMOVE_TODO,SET_TODOS,store} from "../store.js"
+import {SET_TODO,ADD_TODO,UPDATE_TODO,REMOVE_TODO,SET_TODOS,store} from "../store.js"
 
 
 export function loadTodos(filterBy) {
@@ -20,3 +20,8 @@ export function saveTodo(todo){
   
 }
 
+export function getTodo(todoId) {
+    console.log(todoId)
+    return todoService.get(todoId)
+    .then(todo => store.dispatch({type:SET_TODO,todo}))
+}
