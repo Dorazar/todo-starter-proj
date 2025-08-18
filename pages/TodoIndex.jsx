@@ -4,6 +4,9 @@ import { DataTable } from '../cmps/data-table/DataTable.jsx'
 import { todoService } from '../services/todo.service.js'
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
 import { loadTodos, removeTodo } from '../store/actions/todo.actions.js'
+import { IS_LOADING} from '../store/store.js'
+
+
 
 const { useSelector, useDispatch } = ReactRedux
 const { useState, useEffect } = React
@@ -12,19 +15,32 @@ const { Link, useSearchParams } = ReactRouterDOM
 export function TodoIndex() {
   // const [todos, setTodos] = useState(null)
 
-  const todos = useSelector((state) => state.todos)
+  const dispatch = useDispatch()
 
+  const todos = useSelector((state) => state.todos)
+  const isLoading = useSelector((state) => state.isLoading)
+  const filter = useSelector(state => state.filterBy)
   // Special hook for accessing search-params:
   const [searchParams, setSearchParams] = useSearchParams()
 
   const defaultFilter = todoService.getFilterFromSearchParams(searchParams)
-
   const [filterBy, setFilterBy] = useState(defaultFilter)
 
+ 
+
   useEffect(() => {
+ 
     setSearchParams(filterBy)
     loadTodos(filterBy)
+    
   }, [filterBy])
+
+  
+  if (todos.length >= 0) {
+  dispatch({ type: IS_LOADING, isLoading: false }) }
+  else
+  {dispatch({ type: IS_LOADING, isLoading: true })}
+
 
   function onRemoveTodo(todoId) {
     removeTodo(todoId)
@@ -53,7 +69,7 @@ export function TodoIndex() {
       })
   }
 
-  if (!todos) return <div>Loading...</div>
+  if (isLoading) return <div>Loading...</div>
   return (
     <section className="todo-index">
       <TodoFilter filterBy={filterBy} onSetFilterBy={setFilterBy} />
@@ -69,6 +85,7 @@ export function TodoIndex() {
       <div style={{ width: '60%', margin: 'auto' }}>
         <DataTable todos={todos} onRemoveTodo={onRemoveTodo} />
       </div>
+     
     </section>
   )
 }

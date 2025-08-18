@@ -1,10 +1,13 @@
 import { todoService } from "../../services/todo.service.js";
-import {SET_TODO,ADD_TODO,UPDATE_TODO,REMOVE_TODO,SET_TODOS,store} from "../store.js"
+import {SET_TODO,ADD_TODO,UPDATE_TODO,REMOVE_TODO,SET_TODOS,store, FILTER_BY} from "../store.js"
 
 
 export function loadTodos(filterBy) {
+ 
     return todoService.query(filterBy)
+
     .then(todos => store.dispatch({type:SET_TODOS,todos}))
+    .then(() => store.dispatch({type:FILTER_BY,filterBy}))
 }
 
 export function removeTodo(todoId) {
@@ -25,3 +28,5 @@ export function getTodo(todoId) {
     return todoService.get(todoId)
     .then(todo => store.dispatch({type:SET_TODO,todo}))
 }
+
+   console.log('store.getstate:', store.getState())

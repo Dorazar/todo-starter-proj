@@ -1,8 +1,15 @@
+import { FILTER_BY } from "../store/store.js"
+
 const { useState, useEffect } = React
+const { useSelector, useDispatch } = ReactRedux
 
 export function TodoFilter({ filterBy, onSetFilterBy }) {
 
     const [filterByToEdit, setFilterByToEdit] = useState({...filterBy})
+
+    const dispatch = useDispatch()
+
+    // const [searchParams, setSearchParams] = useSearchParams()
 
     useEffect(() => {
         // Notify parent
@@ -26,7 +33,9 @@ export function TodoFilter({ filterBy, onSetFilterBy }) {
             default: break
         }
 
-        setFilterByToEdit(prevFilter => ({ ...prevFilter, [field]: value }))
+    setFilterByToEdit(prevFilter => ({ ...prevFilter, [field]: value }))
+     
+  
     }
 
     // Optional support for LAZY Filtering with a button
