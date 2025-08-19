@@ -1,50 +1,47 @@
-const { useState } = React
+const { useState,useEffect } = React
 const { Link, NavLink } = ReactRouterDOM
 const { useNavigate } = ReactRouter
 
 import { userService } from '../services/user.service.js'
 import { UserMsg } from "./UserMsg.jsx"
 import { LoginSignup } from './LoginSignup.jsx'
-import { showErrorMsg } from '../services/event-bus.service.js'
+import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
+import { userActions } from '../store/actions/user.actions.js'
+
 
 const { useSelector, useDispatch } = ReactRedux
 
 
 export function AppHeader() {
     const navigate = useNavigate()
-    const [user, setUser] = useState(userService.getLoggedinUser())
+    // const [user, setUser] = useState(userService.getLoggedinUser())
     
 
-    const loggedUser = useSelector(state => state.loggedInUser)
-
+    const loggedUser = useSelector(state => state.user)
   
 
     function onLogout() {
-        userService.logout()
+        userActions.logout()
             .then(() => {
-                onSetUser(null)
+                showSuccessMsg(`goodbey ${loggedUser.username}`)
             })
             .catch((err) => {
                 showErrorMsg('OOPs try again')
             })
     }
 
-    function onSetUser(user) {
-        setUser(user)
-        navigate('/')
-    }
     return (
         <header className="app-header full main-layout">
             <section className="header-container">
                 <h1>React Todo App</h1>
-                {user ? (
+                {loggedUser ? (
                     < section >
-                        <Link to={`/user/${user._id}`}>Hello {user.fullname}</Link>
+                        <Link to={`/user/${loggedUser._id}`}>Hello {loggedUser.fullname}</Link>
                         <button onClick={onLogout}>Logout</button>
                     </ section >
                 ) : (
                     <section>
-                        <LoginSignup onSetUser={onSetUser} />
+                        <LoginSignup/>
                     </section>
                 )}
                 <nav className="app-nav">

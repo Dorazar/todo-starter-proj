@@ -1,6 +1,13 @@
 import { userService } from '../../services/user.service.js'
 import { SET_USER, SET_USER_BALANCE, store } from '../store.js'
 
+export const userActions={
+updateUser,
+login,
+signup,
+logout
+}
+
 
 export function updateUser(userToUpdate) {
     return userService.updateUserPreffs(userToUpdate)
@@ -23,6 +30,7 @@ export function login(credentials) {
                 type: SET_USER,
                 user
             })
+            
             return user
         })
         .catch(err => {

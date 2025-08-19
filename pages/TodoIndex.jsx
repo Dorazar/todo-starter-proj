@@ -22,7 +22,6 @@ export function TodoIndex() {
   const filter = useSelector(state => state.filterBy)
   // Special hook for accessing search-params:
   const [searchParams, setSearchParams] = useSearchParams()
-
   const defaultFilter = todoService.getFilterFromSearchParams(searchParams)
   const [filterBy, setFilterBy] = useState(defaultFilter)
 
@@ -37,7 +36,7 @@ export function TodoIndex() {
   if (todos.length >= 0) {
   dispatch({ type: IS_LOADING, isLoading: false }) }
   else
-  {dispatch({ type: IS_LOADING, isLoading: true })}
+  dispatch({ type: IS_LOADING, isLoading: true })
 
 
   function onRemoveTodo(todoId) {
@@ -89,7 +88,7 @@ export function TodoIndex() {
       <div style={{ width: '60%', margin: 'auto' }}>
         <DataTable todos={todos} onRemoveTodo={onRemoveTodo} />
       </div>
-     
+   
     </section>
   )
 }

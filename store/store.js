@@ -1,4 +1,5 @@
-import { userService } from '../services/user.service.js'
+import { userService } from "../services/user.service.js"
+
 
 const { createStore } = Redux
 
@@ -21,7 +22,7 @@ const initalState = {
   todo: {},
   isLoading: false,
   filterBy: {},
-  loggedInUser: null,
+  user: userService.getLoggedinUser(),
 }
 
 export function appReducer(state = initalState, cmd = {}) {
@@ -48,7 +49,7 @@ export function appReducer(state = initalState, cmd = {}) {
       return { ...state, filterBy: { ...state.filterBy, ...cmd.filterBy } }
     // USER
     case SET_USER:
-      return { ...state, loggedInUser: cmd.loggedInUser }
+      return { ...state, user:cmd.user}
     case SET_USER_BALANCE:
       if (!state.user) return state
       return { ...state, user: { ...state.user, balance: cmd.balance } }
