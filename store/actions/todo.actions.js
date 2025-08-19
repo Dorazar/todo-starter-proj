@@ -26,8 +26,9 @@ export function getTodo(todoId) {
     .then(todo => store.dispatch({type:SET_TODO,todo}))
 }
 
-
+// #USER
 export function setLoggedinUser() {
     return userService.getLoggedinUser()
     .then(user => store.dispatch({type:SET_USER,user}))
 }
+

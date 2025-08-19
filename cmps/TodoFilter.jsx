@@ -28,12 +28,12 @@ export function TodoFilter({ filterBy, onSetFilterBy }) {
             case 'checkbox':
                 value = target.checked
                 break
-
+           
             default: break
         }
 
     setFilterByToEdit(prevFilter => ({ ...prevFilter, [field]: value }))
-     
+    console.log(filterByToEdit)
   
     }
 
@@ -43,7 +43,7 @@ export function TodoFilter({ filterBy, onSetFilterBy }) {
         onSetFilterBy(filterByToEdit)
     }
 
-    const { txt, importance } = filterByToEdit
+    const { txt, importance,isDone } = filterByToEdit
     return (
         <section className="todo-filter">
             <h2>Filter Todos</h2>
@@ -55,7 +55,12 @@ export function TodoFilter({ filterBy, onSetFilterBy }) {
                 <input value={importance} onChange={handleChange}
                     type="number" placeholder="By Importance" id="importance" name="importance"
                 />
-
+            <label htmlFor="isDone"></label>
+             <select value={isDone} name="isDone" id="isDone" onChange={handleChange}>
+                <option>All</option>\
+                <option value='Done'>Done</option>
+                <option value='Active'>Active</option>
+             </select>
                 <button hidden>Set Filter</button>
             </form>
         </section>
