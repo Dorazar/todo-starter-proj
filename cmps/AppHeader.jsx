@@ -7,11 +7,18 @@ import { UserMsg } from "./UserMsg.jsx"
 import { LoginSignup } from './LoginSignup.jsx'
 import { showErrorMsg } from '../services/event-bus.service.js'
 
+const { useSelector, useDispatch } = ReactRedux
+
 
 export function AppHeader() {
     const navigate = useNavigate()
     const [user, setUser] = useState(userService.getLoggedinUser())
     
+
+    const loggedUser = useSelector(state => state.loggedInUser)
+
+  
+
     function onLogout() {
         userService.logout()
             .then(() => {

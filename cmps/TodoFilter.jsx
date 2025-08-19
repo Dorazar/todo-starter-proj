@@ -1,13 +1,12 @@
 import { FILTER_BY } from "../store/store.js"
 
 const { useState, useEffect } = React
-const { useSelector, useDispatch } = ReactRedux
+
 
 export function TodoFilter({ filterBy, onSetFilterBy }) {
 
     const [filterByToEdit, setFilterByToEdit] = useState({...filterBy})
 
-    const dispatch = useDispatch()
 
     // const [searchParams, setSearchParams] = useSearchParams()
 

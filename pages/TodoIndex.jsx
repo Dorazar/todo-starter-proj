@@ -3,7 +3,7 @@ import { TodoList } from '../cmps/TodoList.jsx'
 import { DataTable } from '../cmps/data-table/DataTable.jsx'
 import { todoService } from '../services/todo.service.js'
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
-import { loadTodos, removeTodo } from '../store/actions/todo.actions.js'
+import { getTodo, loadTodos, removeTodo, saveTodo } from '../store/actions/todo.actions.js'
 import { IS_LOADING} from '../store/store.js'
 
 
@@ -26,10 +26,8 @@ export function TodoIndex() {
   const defaultFilter = todoService.getFilterFromSearchParams(searchParams)
   const [filterBy, setFilterBy] = useState(defaultFilter)
 
- 
-
   useEffect(() => {
- 
+
     setSearchParams(filterBy)
     loadTodos(filterBy)
     
@@ -43,7 +41,10 @@ export function TodoIndex() {
 
 
   function onRemoveTodo(todoId) {
-    removeTodo(todoId)
+   const isConfrim = confirm('Sure?')
+   
+   if (isConfrim) {
+      removeTodo(todoId)
       .then(() => {
         // setTodos(prevTodos => prevTodos.filter(todo => todo._id !== todoId))
         showSuccessMsg(`Todo removed`)
@@ -53,20 +54,31 @@ export function TodoIndex() {
         console.log('err:', err)
         showErrorMsg('Cannot remove todo ' + todoId)
       })
+   }
+   else {return}
+  
   }
 
   function onToggleTodo(todo) {
     const todoToSave = { ...todo, isDone: !todo.isDone }
-    todoService
-      .save(todoToSave)
-      .then((savedTodo) => {
-        setTodos((prevTodos) => prevTodos.map((currTodo) => (currTodo._id !== todo._id ? currTodo : { ...savedTodo })))
-        showSuccessMsg(`Todo is ${savedTodo.isDone ? 'done' : 'back on your list'}`)
-      })
-      .catch((err) => {
-        console.log('err:', err)
-        showErrorMsg('Cannot toggle todo ' + todoId)
-      })
+    
+    saveTodo(todoToSave)
+    .then(()=>
+      showSuccessMsg(`Todo is ${todoToSave.isDone ? 'done' : 'back on your list'}`))
+    .catch((err)=>{
+      console.log('err:', err)
+      showErrorMsg('Cannot toggle todo ' + todoToSave._id)
+    })
+      // .then((savedTodo) => {
+      //  console.log(savedTodo)
+      // //  getTodo(savedTodo._id)
+      //   // setTodos((prevTodos) => prevTodos.map((currTodo) => (currTodo._id !== todo._id ? currTodo : { ...savedTodo })))
+      //   showSuccessMsg(`Todo is ${savedTodo.isDone ? 'done' : 'back on your list'}`)
+      // })
+      // .catch((err) => {
+      //   console.log('err:', err)
+      //   showErrorMsg('Cannot toggle todo ' + todoId)
+      // })
   }
 
   if (isLoading) return <div>Loading...</div>
