@@ -2,13 +2,16 @@ import { storageService } from "./async-storage.service.js"
 
 
 export const userService = {
-    getLoggedinUser,
+  
     login,
     logout,
     signup,
+    getLoggedinUser,
+    
     getById,
     query,
-    getEmptyCredentials
+    getEmptyCredentials,
+    updateScore
 }
 const STORAGE_KEY_LOGGEDIN = 'user'
 const STORAGE_KEY = 'userDB'
@@ -52,6 +55,20 @@ function _setLoggedinUser(user) {
     sessionStorage.setItem(STORAGE_KEY_LOGGEDIN, JSON.stringify(userToSave))
     return userToSave
 }
+
+function updateScore(diff) {
+    return userService.getById(getLoggedinUser()._id)
+        .then(user => {
+            if (user.score + diff < 0) return Promise.reject('No credit')
+            user.score += diff
+            return storageService.put(STORAGE_KEY, user)
+                .then((user) => {
+                    _setLoggedinUser(user)
+                    return user.score
+                })
+        })
+}
+
 
 function getEmptyCredentials() {
     return {
