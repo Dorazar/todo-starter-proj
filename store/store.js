@@ -17,12 +17,15 @@ export const SET_USER = 'SET_USER'
 export const SET_USER_BALANCE = 'SET_USER_BALANCE'
 export const SET_IS_LOADING = 'SET_IS_LOADING'
 
+export const DONE_TODOS='DONE_TODOS'
+
 const initalState = {
   todos: [],
   todo: {},
   isLoading: false,
   filterBy: {},
   user: userService.getLoggedinUser(),
+  doneTodos:[] || 0
 }
 
 export function appReducer(state = initalState, cmd = {}) {
@@ -59,6 +62,9 @@ export function appReducer(state = initalState, cmd = {}) {
         ...state,
         isLoading: cmd.isLoading,
       }
+
+      case DONE_TODOS: 
+      return {...state,doneTodos:cmd.doneTodos}
 
     default:
       return state

@@ -1,6 +1,7 @@
 const { useState } = React
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
 import { userService } from '../services/user.service.js'
+import { getDoneTodos } from '../store/actions/todo.actions.js'
 import { userActions } from '../store/actions/user.actions.js'
 
 
@@ -23,9 +24,12 @@ export function LoginSignup() {
   }
 
   function login(credentials) {
+    
+
     userActions
       .login(credentials)
       .then(() => {
+        getDoneTodos()
         showSuccessMsg('Logged in successfully')
       })
       .catch((err) => {

@@ -33,7 +33,7 @@ export function TodoFilter({ filterBy, onSetFilterBy }) {
         }
 
     setFilterByToEdit(prevFilter => ({ ...prevFilter, [field]: value }))
-    console.log(filterByToEdit)
+    
   
     }
 

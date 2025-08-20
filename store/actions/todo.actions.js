@@ -1,5 +1,5 @@
 import { todoService } from "../../services/todo.service.js";
-import {SET_TODO,ADD_TODO,UPDATE_TODO,REMOVE_TODO,SET_TODOS,store, FILTER_BY, LOGGED_IN_USER} from "../store.js"
+import {SET_TODO,ADD_TODO,UPDATE_TODO,REMOVE_TODO,SET_TODOS,store, FILTER_BY, LOGGED_IN_USER, DONE_TODOS} from "../store.js"
 import { userService } from "../../services/user.service.js";
 
 export function loadTodos(filterBy) {
@@ -24,6 +24,12 @@ export function saveTodo(todo){
 export function getTodo(todoId) {
     return todoService.get(todoId)
     .then(todo => store.dispatch({type:SET_TODO,todo}))
+}
+
+export function getDoneTodos() {
+  return todoService.query()
+    .then(todos=>todos.filter(todo => todo.isDone===true))
+    .then(doneTodos => store.dispatch({type:DONE_TODOS,doneTodos}))
 }
 
 // #USER

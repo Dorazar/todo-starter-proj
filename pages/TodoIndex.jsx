@@ -3,7 +3,7 @@ import { TodoList } from '../cmps/TodoList.jsx'
 import { DataTable } from '../cmps/data-table/DataTable.jsx'
 import { todoService } from '../services/todo.service.js'
 import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
-import { getTodo, loadTodos, removeTodo, saveTodo } from '../store/actions/todo.actions.js'
+import { getDoneTodos, getTodo, loadTodos, removeTodo, saveTodo } from '../store/actions/todo.actions.js'
 import { IS_LOADING} from '../store/store.js'
 
 
@@ -62,7 +62,8 @@ export function TodoIndex() {
     const todoToSave = { ...todo, isDone: !todo.isDone }
     
     saveTodo(todoToSave)
-    .then(()=>
+    .then(()=> 
+      getDoneTodos(),
       showSuccessMsg(`Todo is ${todoToSave.isDone ? 'done' : 'back on your list'}`))
     .catch((err)=>{
       console.log('err:', err)
