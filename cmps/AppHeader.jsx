@@ -45,7 +45,8 @@ export function AppHeader() {
               
                 {loggedUser ? (
                     < section >
-                        <Link to={`/user/${loggedUser._id}`}>Hello {loggedUser.fullname}</Link>
+                        <Link to={`/user/${loggedUser._id}`}>Hello {loggedUser.fullname} | Balance:{loggedUser.balance}</Link>
+
                         <button onClick={onLogout}>Logout</button>
                     </ section >
                 ) : (
